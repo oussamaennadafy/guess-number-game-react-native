@@ -1,38 +1,32 @@
-import React from 'react';
-import { SafeAreaView, StyleSheet, TextInput } from 'react-native';
+import { Text, View } from "react-native"
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Home from "./src/screens/Home";
+import Guess from "./src/screens/Guess";
+import GameOver from "./src/screens/GameOver";
 
+type RootStackParamList = {
+  Home: undefined,
+  Guess: { misteriosNumber: string },
+  GameOver: undefined,
+}
 
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
-const TextInputExample = () =>
+const App = () =>
 {
-  const [text, onChangeText] = React.useState('Useless Text');
-  const [number, onChangeNumber] = React.useState('');
-
   return (
-    <SafeAreaView>
-      <TextInput
-        style={styles.input}
-        onChangeText={onChangeText}
-        value={text}
-      />
-      <TextInput
-        style={styles.input}
-        onChangeText={onChangeNumber}
-        value={number}
-        placeholder="useless placeholder"
-        keyboardType="numeric"
-      />
-    </SafeAreaView>
-  );
-};
+    <NavigationContainer>
+      <Stack.Navigator>
 
-const styles = StyleSheet.create({
-  input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
-  },
-});
+        <Stack.Screen name="Home" component={Home} options={{ header: () => null }} />
+        <Stack.Screen name="Guess" component={Guess} options={{ header: () => null }} />
+        <Stack.Screen name="GameOver" component={GameOver} options={{ header: () => null }} />
 
-export default TextInputExample;
+      </Stack.Navigator>
+    </NavigationContainer>
+  )
+}
+
+
+export default App
