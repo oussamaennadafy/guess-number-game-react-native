@@ -1,38 +1,44 @@
-import React from 'react';
-import { SafeAreaView, StyleSheet, TextInput } from 'react-native';
+import { Text, View } from "react-native"
+import { NavigationContainer, useRoute } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Categories from "./src/screens/Categories";
+import MealsByCategory from "./src/screens/MealsByCategory";
+import Meal from "./src/screens/Meal";
+import COLORS from "./src/constants/color";
+import Header from "./src/components/Categories/Header";
+import RootStackParamList from "./types/RootStackParamList"
+import { CATEGORIES } from "./data/dummy_data";
 
 
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
-const TextInputExample = () =>
+const App = () =>
 {
-  const [text, onChangeText] = React.useState('Useless Text');
-  const [number, onChangeNumber] = React.useState('');
-
   return (
-    <SafeAreaView>
-      <TextInput
-        style={styles.input}
-        onChangeText={onChangeText}
-        value={text}
-      />
-      <TextInput
-        style={styles.input}
-        onChangeText={onChangeNumber}
-        value={number}
-        placeholder="useless placeholder"
-        keyboardType="numeric"
-      />
-    </SafeAreaView>
-  );
-};
+    <NavigationContainer>
+      <Stack.Navigator>
 
-const styles = StyleSheet.create({
-  input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
-  },
-});
+        <Stack.Screen
+          name="Categories"
+          component={Categories}
+          options={{
+            header: () => null
+          }} />
 
-export default TextInputExample;
+        <Stack.Screen name="MealsByCategory" component={MealsByCategory} options={
+          ({ route }) =>
+          {
+            const titleOfCategory = CATEGORIES.filter(category => category.id === route.params.categoryID)[0].title
+            return { headerTitle: `${titleOfCategory} Meals` }
+          }
+        } />
+
+        <Stack.Screen name="Meal" component={Meal} />
+
+      </Stack.Navigator>
+    </NavigationContainer>
+  )
+}
+
+
+export default App
